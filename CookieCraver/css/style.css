@@ -36,3 +36,22 @@ p {
   margin-top: 1.8em;
   font-size: 1.2em;
 }
+
+.avatar {
+  height: 1.2em;
+  width: auto;
+  border-radius: 50px;
+  margin-right: 0.51em;
+}
+
+#info {
+  background-color: #92140C;
+  margin-left: -0.5em;
+  margin-right: -0.5em;
+  margin-top: -0.5em;
+  font-size: 1.4em;
+  font-weight: bold;
+  color: #ececec;
+  padding: 0.5em;
+  vertical-align: center;
+}
