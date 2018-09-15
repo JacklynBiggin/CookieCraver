@@ -1,4 +1,5 @@
 import pymysql
+from flask import jsonify, request
 # import pymysql.cursors
 
 from flask import Flask
@@ -16,9 +17,9 @@ def connect():
                                  cursorclass=pymysql.cursors.DictCursor)
 
 def disconnect():
-     global connection
-     connection.commit()
-     connection.close()
+    global connection
+    connection.commit()
+    connection.close()
 
 @app.route('/user', methods=("POST"))
 def createUser():
@@ -29,8 +30,9 @@ def createUser():
             cursor.execute(query, request.json["uid"])
             disconnect()
             return jsonify({}), 200
+    except Exception:
+        return jsonify({}) , 400
 
-# @app.route('/user/cookies', methods=("GET")) # all cookies for user
 @app.route('/user/cookies', methods=("GET"))
 def getUserCookies():
     connect()
@@ -40,6 +42,10 @@ def getUserCookies():
             cursor.execute(query, (request.args["uid"]))
             disconnect()
             return jsonify({"score": cursor.fetchone()}), 200
+    except Exception:
+        disconnect()
+        return jsonify({}) , 400
+
 
 @app.route('/user/update', methods=("PUT"))
 def updateUserCookies():
@@ -53,6 +59,9 @@ def updateUserCookies():
             cursor.execute(query2, (currScore + request.json["new"], request.json["uid"]))
             disconnect()
             return jsonify({}), 200
+    except Exception:
+        disconnect()
+        return jsonify({}) , 400
 
 @app.route('/leaderboard', methods=("GET")) # top 100
 def getTopUsersAndScores():
@@ -63,6 +72,9 @@ def getTopUsersAndScores():
             cursor.execute(query)
             disconnect()
             return jsonify(cursor.fetchall()), 200
+    except Exception:
+        disconnect()
+        return jsonify({}) , 400
 
 if __name__ == '__main__':
    app.run(debug = True)
