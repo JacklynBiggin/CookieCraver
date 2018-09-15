@@ -1,6 +1,6 @@
 {
   "name": "CookieCraver",
-  "version": "1.2",
+  "version": "1.3",
   "description": "Crave those cookies",
   "permissions": [
     "declarativeContent",
@@ -24,20 +24,12 @@
   },
   "content_scripts": [
     {
-      "matches": [
-        "<all_urls>"
-      ],
-      "js": [
-        "onLoad.js"
-      ]
+      "matches": ["<all_urls>"],
+      "js": ["onLoad.js"]
     },
     {
-      "matches": [
-        "https://CookieCraver.com/*"
-      ],
-      "js": [
-        "onWebPage.js"
-      ]
+      "matches": ["https://CookieCraver.com/*"],
+      "js": ["onWebPage.js"]
     }
   ],
   "page_action": {
