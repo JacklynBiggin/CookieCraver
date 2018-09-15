@@ -5,7 +5,10 @@ API Endpoints:
     * Create new saved user with `uid` 
     *   ``` 
             {
-                "uid": 1234
+                "uid": 1234,
+                "fname": "john",
+                "sname": "smith",
+                "pic": "some-url"
             } 
         ```
 * PUT `/user/update`
