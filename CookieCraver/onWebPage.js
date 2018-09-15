@@ -1,7 +1,7 @@
-const API_URL = 'http://cookiecraver.azurewebsites.net';
+const API_URL = 'http://cookiecraver.eastus.cloudapp.azure.com';
 chrome.storage.sync.get('sessionUser', (val) => {
   const { sessionUser } = val;
-  fetch(`${API_URL}/user/cookies?uid=${sessionUser.id}>`)
+  fetch(`${API_URL}/user/cookies?uid=${sessionUser.uid}`)
     .then(data => data.json())
     .then((data) => {
       const playerPic = document.getElementById('player-pic');
