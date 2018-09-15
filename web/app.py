@@ -33,7 +33,7 @@ def index():
             users = list(cursor.fetchall())
             res_users = []
             for user in users:
-                res_users.append([user[0], user[1], user[2], user[3], "%04d" % user[4]])
+                res_users.append([user[0], user[1], user[2], user[3], user[4]])
             return render_template('index.html', users=res_users)
     except Exception as e:
         print(e)
@@ -93,7 +93,8 @@ def updateUserCookies():
             query2 = "UPDATE `users` SET `score`=%s WHERE `uid`=%s;"
             cursor.execute(query1, (request.json["uid"],))
             currScore = int(cursor.fetchone()[0])
-            cursor.execute(query2, (currScore + int(request.json["new"]), request.json["uid"], ))
+            if int(request.json["new"]) > currScore:
+                cursor.execute(query2, (int(request.json["new"]), request.json["uid"], ))
             disconnect()
             return jsonify({}), 200
     except Exception as e:
