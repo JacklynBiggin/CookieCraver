@@ -1,0 +1,15 @@
+.wrapper {
+  white-space: nowrap;
+  padding: 1em;
+}
+
+html {
+  background-image: linear-gradient(rgba(288,192,140,0.8), rgba(165,127,96,0.8)), url("../images/cookie-bg.png");
+}
+
+h1 {
+    font-family: 'Gamja Flower', cursive;
+    color: #502419;
+    font-size: 4em;
+    margin-top: 0;
+}
