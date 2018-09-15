@@ -12,4 +12,27 @@ h1 {
     color: #502419;
     font-size: 4em;
     margin-top: 0;
+    margin-bottom: 0.2em;
+    text-align: center;
+}
+
+#score {
+  font-size: 4em;
+  text-align: center;
+}
+
+#score span {
+  background-image: linear-gradient(#92140C, #790000);
+  border: 4px solid white;
+  font-weight: bold;
+  padding: 0.2em;
+  margin: 0.05em;
+  color: #ececec;
+  border-radius: 3px;
+  font-family: 'Gamja Flower', cursive;
+}
+
+p {
+  margin-top: 1.8em;
+  font-size: 1.2em;
 }
