@@ -33,7 +33,7 @@ def index():
             users = list(cursor.fetchall())
             res_users = []
             for user in users:
-                res_users.append([user[0], "%04d" % user[1]])
+                res_users.append([user[0], user[1], user[2], user[3], "%04d" % user[4]])
             return render_template('index.html', users=res_users)
     except Exception as e:
         print(e)
@@ -46,11 +46,11 @@ def createUser():
     connect()
     try:
         with connection.cursor() as cursor:
-            query = "INSERT INTO `users` (`uid`, `score`) VALUES (%s, 0);"
-            cursor.execute(query, (request.json["uid"],))
+            query = "INSERT INTO `users` (`uid`, `fname`, `sname`, `pic`,`score`) VALUES (%s,%s,%s,%s, 0);"
+            cursor.execute(query, (request.json["uid"],request.json["fname"],request.json["sname"],request.json["pic"],))
             disconnect()
             return jsonify({}), 200
-    except Exception:
+    except Exception as e:
         return jsonify({}) , 400
 
 @app.route('/user/cookies', methods=["GET"])
@@ -58,10 +58,17 @@ def getUserCookies():
     connect()
     try:
         with connection.cursor() as cursor:
-            query = "SELECT `score` FROM `users` WHERE `uid`=%s;"
+            query = "SELECT * FROM `users` WHERE `uid`=%s;"
             cursor.execute(query, (request.args["uid"],))
             disconnect()
-            return jsonify({"score": cursor.fetchone() if cursor.fetchone() else 0 }), 200
+            user = cursor.fetchone()
+            return jsonify({
+                "uid": user[0],
+                "fname": user[1],
+                "sname": user[2],
+                "pic": user[3],
+                "score": user[4] if user[4] else 0 
+            }), 200
     except Exception:
         disconnect()
         return jsonify({}) , 400
