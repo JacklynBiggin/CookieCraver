@@ -8,7 +8,11 @@ chrome.storage.sync.get('sessionUser', (val) => {
   info.innerText = `${sessionUser.name}`;
 });
 chrome.storage.sync.get('sessionCount', (val) => {
-  score.innerText = val.sessionCount;
+  const { sessionCount } = val;
+  sessionCount
+    .toString()
+    .split('')
+    .forEach(digit => score.innerHTML += `<span>${digit}</span>`);
 });
 
 // });
