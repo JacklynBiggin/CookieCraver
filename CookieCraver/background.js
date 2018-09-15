@@ -1,6 +1,6 @@
 const USER_KEY = 'sessionUser';
 const USER_URL = 'https://www.googleapis.com/oauth2/v1/userinfo?alt=json&access_token=';
-const DEBOUNCE_TIME = 1000;
+const DEBOUNCE_TIME = 600;
 
 chrome.runtime.onInstalled.addListener(() => {
   chrome.declarativeContent.onPageChanged.removeRules(undefined, () => {
@@ -55,7 +55,6 @@ chrome.runtime.onInstalled.addListener(() => {
     } = info;
     window.clearTimeout(timeOutID)
     timeOutID = window.setTimeout(() => chrome.cookies.getAll({}, (cookies) => {
-      console.log(cookies);
       chrome.storage.sync.set({ count: cookies.length });
     }), DEBOUNCE_TIME);
 
