@@ -1,4 +1,4 @@
-const API_URL = '';
+const API_URL = 'http://cookiecraver.azurewebsites.net';
 
 chrome.storage.sync.get('sessionUser', (val) => {
   const { sessionUser } = val;
