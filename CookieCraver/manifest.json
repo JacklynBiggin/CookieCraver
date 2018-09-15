@@ -1,0 +1,47 @@
+{
+  "name": "CookieCraver",
+  "version": "0.1",
+  "description": "Crave those cookies",
+  "permissions": [
+    "declarativeContent",
+    "storage",
+    "cookies",
+    "activeTab",
+    "identity"
+  ],
+  "oauth2": {
+    "client_id": "925023765741-1ut3sl10a6n15ad2chph886kcbfmq30v.apps.googleusercontent.com",
+    "scopes": [
+      "https://www.googleapis.com/auth/userinfo.email"
+    ]
+  },
+  "background": {
+    "scripts": [
+      "background.js"
+    ],
+    "persistent": false
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["onLoad.js"]
+    }
+  ],
+  "page_action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "images/get_started16.png",
+      "32": "images/get_started32.png",
+      "48": "images/get_started48.png",
+      "128": "images/get_started128.png"
+    }
+  },
+  "options_page": "options.html",
+  "icons": {
+    "16": "images/get_started16.png",
+    "32": "images/get_started32.png",
+    "48": "images/get_started48.png",
+    "128": "images/get_started128.png"
+  },
+  "manifest_version": 2
+}
