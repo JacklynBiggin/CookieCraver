@@ -1,6 +1,6 @@
 {
   "name": "CookieCraver",
-  "version": "0.1",
+  "version": "1.2",
   "description": "Crave those cookies",
   "permissions": [
     "declarativeContent",
@@ -11,7 +11,7 @@
     "<all_urls>"
   ],
   "oauth2": {
-    "client_id": "925023765741-1ut3sl10a6n15ad2chph886kcbfmq30v.apps.googleusercontent.com",
+    "client_id": "925023765741-nktos0pqdk438a75vncokf647hikdngl.apps.googleusercontent.com",
     "scopes": [
       "https://www.googleapis.com/auth/userinfo.email"
     ]
@@ -24,12 +24,20 @@
   },
   "content_scripts": [
     {
-      "matches": ["<all_urls>"],
-      "js": ["onLoad.js"]
+      "matches": [
+        "<all_urls>"
+      ],
+      "js": [
+        "onLoad.js"
+      ]
     },
     {
-      "matches": ["https://CookieCraver.com/*"],
-      "js": ["onWebPage.js"]
+      "matches": [
+        "https://CookieCraver.com/*"
+      ],
+      "js": [
+        "onWebPage.js"
+      ]
     }
   ],
   "page_action": {
