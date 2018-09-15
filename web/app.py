@@ -1,11 +1,11 @@
 import MySQLdb
 import os
+import json
 from flask import jsonify, request, render_template
 # import pymysql.cursors
 from flask import Flask
 static_file = os.path.abspath('CookieCraver/web/static')
 template_file = os.path.abspath('CookieCraver/web/template')
-print(template_file)
 app = Flask(__name__, template_folder=template_file, static_folder=static_file)
 
 connection = None
@@ -24,7 +24,22 @@ def disconnect():
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    connect()
+    try:
+        with connection.cursor() as cursor:
+            query = "SELECT * FROM `users` ORDER BY `score` DESC LIMIT 100;"
+            cursor.execute(query)
+            disconnect()
+            users = list(cursor.fetchall())
+            res_users = []
+            for user in users:
+                res_users.append([user[0], "%04d" % user[1]])
+            return render_template('index.html', users=res_users)
+    except Exception as e:
+        print(e)
+        disconnect()
+        return jsonify({}) , 400
+    
 
 @app.route('/user', methods=["POST"])
 def createUser():
