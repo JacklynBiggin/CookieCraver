@@ -18,12 +18,23 @@ chrome.runtime.onInstalled.addListener(() => {
       return;
     }
     var x = new XMLHttpRequest();
-    x.open('GET', 'https://www.googleapis.com/oauth2/v1/userinfo?alt=json&access_token=' + token);
+    x.open('GET', `https://www.googleapis.com/oauth2/v1/userinfo?alt=json&access_token=${token}`);
     x.onload = () => {
       chrome.storage.sync.set({ [USER_KEY]: JSON.parse(x.response) });
     };
     x.send();
   });
 
+  let collected = 0;
+  chrome.cookies.onChanged.addListener((info) => {
+    const {
+      cause,
+      cookie,
+      removed
+    } = info;
+    if (cause === 'explicit' && !removed) {
+      chrome.storage.sync.set({ sessionCount: collected += 1 });
+    }
+  });
 
 });
