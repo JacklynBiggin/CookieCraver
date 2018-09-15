@@ -5,7 +5,7 @@ let score = document.getElementById('score');
 // info.innerText = `${user.name ? `${user.name}:` : ''} ${user.score || 0}`;
 chrome.storage.sync.get('sessionUser', (val) => {
   const { sessionUser } = val;
-  info.innerHTML = '<img src="' + `${sessionUser.picture}` +'" class="avatar" />' + `${sessionUser.name}` + "'s cookies";
+  info.innerHTML = `<img src=${sessionUser.picture} class="avatar" /> ${sessionUser.name}'s cookies`;
 });
 chrome.storage.sync.get('count', (val) => {
   const { count } = val;
