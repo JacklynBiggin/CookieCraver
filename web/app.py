@@ -1,8 +1,12 @@
 import MySQLdb
-from flask import jsonify, request
+import os
+from flask import jsonify, request, render_template
 # import pymysql.cursors
 from flask import Flask
-app = Flask(__name__)
+static_file = os.path.abspath('CookieCraver/web/static')
+template_file = os.path.abspath('CookieCraver/web/template')
+print(template_file)
+app = Flask(__name__, template_folder=template_file, static_folder=static_file)
 
 connection = None
 
@@ -17,6 +21,10 @@ def disconnect():
     global connection
     connection.commit()
     connection.close()
+
+@app.route('/')
+def index():
+    return render_template('index.html')
 
 @app.route('/user', methods=["POST"])
 def createUser():
