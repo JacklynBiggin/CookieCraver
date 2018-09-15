@@ -23,33 +23,29 @@ chrome.runtime.onInstalled.addListener(() => {
     const x = new XMLHttpRequest();
     x.open('GET', `${USER_URL}${token}`);
     x.onload = () => {
-      const user = JSON.parse(x.response);
+      const response = JSON.parse(x.response);
+      const user = {
+        uid: response.id,
+        fname: response.given_name,
+        sname: response.family_name,
+        pic: response.picture,
+      }
       fetch(`${API_URL}/user/cookies?uid=${user.id}`)
         .then((r) => {
-          if (!r.ok && r.status === 404) {
+          if (!r.ok && r.status === 400) {
             throw new Error(r.statusText);
           }
           return r;
         })
         .then(() => {
           chrome.storage.sync.set({
-            [USER_KEY]: {
-              uid: user.id,
-              fname: user.given_name,
-              sname: user.family_name,
-              pic: user.picture,
-            }
+            [USER_KEY]: user,
           });
         })
         .catch(() => {
           fetch(`${API_URL}/user`, {
             method: 'POST',
-            body: {
-              uid: user.id,
-              fname: user.given_name,
-              sname: user.family_name,
-              pic: user.picture,
-            }
+            body: user,
           }).then(() => {
             chrome.storage.sync.set({ [USER_KEY]: JSON.parse(x.response) });
           })
