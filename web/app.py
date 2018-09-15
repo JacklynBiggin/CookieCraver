@@ -59,17 +59,27 @@ def getUserCookies():
     try:
         with connection.cursor() as cursor:
             query = "SELECT * FROM `users` WHERE `uid`=%s;"
+            query2 = "SELECT * FROM `users` ORDER BY `score` DESC   ;"
             cursor.execute(query, (request.args["uid"],))
-            disconnect()
             user = cursor.fetchone()
+            cursor.execute(query2)
+            all_users = cursor.fetchall()
+            total = len(all_users)
+            rank = [idx+1 for idx,item in enumerate(list(all_users)) if item[0] == int(request.args["uid"])]
+            if not rank:
+                rank[0] = 0
+            disconnect() 
             return jsonify({
                 "uid": user[0],
                 "fname": user[1],
                 "sname": user[2],
                 "pic": user[3],
-                "score": user[4] if user[4] else 0 
+                "score": user[4] if user[4] else 0,
+                "total": total,
+                "rank" :rank[0]
             }), 200
-    except Exception:
+    except Exception as e:
+        print(e)
         disconnect()
         return jsonify({}) , 400
 
