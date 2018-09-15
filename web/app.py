@@ -4,8 +4,8 @@ import json
 from flask import jsonify, request, render_template
 # import pymysql.cursors
 from flask import Flask
-static_file = os.path.abspath('CookieCraver/web/static')
-template_file = os.path.abspath('CookieCraver/web/template')
+static_file = os.path.abspath('static')
+template_file = os.path.abspath('template')
 app = Flask(__name__, template_folder=template_file, static_folder=static_file)
 
 connection = None
@@ -33,7 +33,7 @@ def index():
             users = list(cursor.fetchall())
             res_users = []
             for user in users:
-                res_users.append([user[0], user[1], user[2], user[3], user[4]])
+                res_users.append([user[0], user[1], user[2], user[3], str(user[4])])
             return render_template('index.html', users=res_users)
     except Exception as e:
         print(e)
@@ -51,6 +51,7 @@ def createUser():
             disconnect()
             return jsonify({}), 200
     except Exception as e:
+        print(e)
         return jsonify({}) , 400
 
 @app.route('/user/cookies', methods=["GET"])
@@ -58,14 +59,14 @@ def getUserCookies():
     connect()
     try:
         with connection.cursor() as cursor:
-            query = "SELECT * FROM `users` WHERE `uid`=%s;"
-            query2 = "SELECT * FROM `users` ORDER BY `score` DESC   ;"
+            query = "SELECT * FROM users WHERE uid=%s;"
+            query2 = "SELECT * FROM users ORDER BY score DESC;"
             cursor.execute(query, (request.args["uid"],))
             user = cursor.fetchone()
             cursor.execute(query2)
             all_users = cursor.fetchall()
             total = len(all_users)
-            rank = [idx+1 for idx,item in enumerate(list(all_users)) if item[0] == int(request.args["uid"])]
+            rank = [idx+1 for idx,item in enumerate(list(all_users)) if item[0] == request.args["uid"]]
             if not rank:
                 rank[0] = 0
             disconnect() 
@@ -115,4 +116,4 @@ def getTopUsersAndScores():
         return jsonify({}) , 400
 
 if __name__ == '__main__':
-   app.run(debug = True)
+   app.run(debug = True, host='0.0.0.0',port=80 )
