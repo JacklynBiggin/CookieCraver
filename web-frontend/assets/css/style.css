@@ -1,0 +1,115 @@
+* {
+  font-family: 'Quicksand', sans-serif;
+
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: #502419;
+
+}
+
+.card {
+    background-color: rgba(0, 0, 0, 0.3);
+    border-radius: 12px;
+    margin-top: 1em;
+}
+
+.card .score {
+    font-size: 4em;
+}
+
+.card .btn-primary {
+    margin-top: 0.5em;
+}
+
+.btn-primary {
+  background-color: #92140C;
+  border: 1px solid #790000;
+}
+
+.btn-primary:hover, .btn-primary:active {
+  background-color: #790000;
+  border: 1px solid #790000;
+}
+
+.score span {
+    background-image: linear-gradient(#92140C, #790000);
+    border: 4px solid white;
+    font-weight: bold;
+    padding: 0.2em;
+    margin: 0.05em;
+    color: #ececec;
+    border-radius: 3px;
+    font-family: 'Gamja Flower', cursive
+}
+
+.card-title img {
+    border-radius: 50px;
+}
+
+html {
+  height: 100%;
+}
+
+body {
+  background-image: linear-gradient(rgba(288,192,140,0.8), rgba(165,127,96,0.8)), url("../img/cookie-bg.png");
+  height: 100%;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  padding-bottom: 1em;
+}
+
+h1 {
+  font-family: 'Gamja Flower', cursive;
+  text-align: center;
+  font-size: 8em;
+}
+
+.leaderboard .card {
+    padding: 0.5em;
+    font-size: 1em;
+}
+
+.leaderboard .ranking {
+  font-weight: bold;
+  font-size: 3em;
+  margin-left: 0.2em;
+}
+
+.leaderboard .name {
+    font-size: 2em;
+    vertical-align: middle;
+    margin-top: 0.35em;
+}
+
+.leaderboard .score {
+  font-size: 2em;
+  margin-top: 0.23em;
+}
+
+.leaderboard img {
+  border-radius: 50px;
+}
+
+/* Bronze/Silver/Gold/Top 10 leaderboard */
+.leaderboard .card:nth-child(1) {
+  background-color: rgba(255,215,0,0.7);
+}
+
+.leaderboard .card:nth-child(2) {
+  background-color: rgba(192,192,192,0.7);
+}
+
+.leaderboard .card:nth-child(3) {
+  background-color: rgba(167,91,16,0.5);
+}
+
+.leaderboard .card:nth-child(4),
+.leaderboard .card:nth-child(5),
+.leaderboard .card:nth-child(6),
+.leaderboard .card:nth-child(7),
+.leaderboard .card:nth-child(8),
+.leaderboard .card:nth-child(9),
+.leaderboard .card:nth-child(10) {
+  background-color: rgba(67,40,24,0.65);
+}
