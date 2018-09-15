@@ -23,7 +23,6 @@ chrome.runtime.onInstalled.addListener(() => {
     const x = new XMLHttpRequest();
     x.open('GET', `${USER_URL}${token}`);
     x.onload = () => {
-      console.log(x.response);
       const user = JSON.parse(x.response);
       fetch(`${API_URL}/user/cookies?uid=${user.id}`)
         .then((r) => {
@@ -33,9 +32,16 @@ chrome.runtime.onInstalled.addListener(() => {
           return r;
         })
         .then(() => {
-          chrome.storage.sync.set({ [USER_KEY]: JSON.parse(x.response) });
+          chrome.storage.sync.set({
+            [USER_KEY]: {
+              uid: user.id,
+              fname: user.given_name,
+              sname: user.family_name,
+              pic: user.picture,
+            }
+          });
         })
-        .catch((e) => {
+        .catch(() => {
           fetch(`${API_URL}/user`, {
             method: 'POST',
             body: {
@@ -54,22 +60,16 @@ chrome.runtime.onInstalled.addListener(() => {
 
   chrome.storage.sync.set({
     [USER_KEY]: {
-      email: "emailegmail.com",
-      family_name: "user",
-      gender: "",
-      given_name: "test",
-      id: "1234",
-      link: "https://plus.google.com/1234",
-      name: "Test User",
-      picture: "https://lh3.googleusercontent.com/-XdUIqdMkCWA/AAAAAAAAAAI/AAAAAAAAAAA/4252rscbv5M/photo.jpg",
-      verified_email: true,
+      fname: "test",
+      sname: "user",
+      uid: "1234",
+      pic: "https://lh3.googleusercontent.com/-XdUIqdMkCWA/AAAAAAAAAAI/AAAAAAAAAAA/4252rscbv5M/photo.jpg",
     }
   });
 
   let timeOutID;
-  chrome.storage.sync.set({ sessionCount: 0 });
   chrome.cookies.getAll({}, (cookies) => {
-    allCookies = cookies;
+    chrome.storage.sync.set({ count: cookies.length });
   });
   chrome.cookies.onChanged.addListener((info) => {
     const {
@@ -91,7 +91,7 @@ chrome.runtime.onInstalled.addListener(() => {
           cache: 'default',
           body: {
             uid: sessionUser.id,
-            new: cookies,
+            new: cookies.length,
           }
         });
       });
