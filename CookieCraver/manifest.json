@@ -7,7 +7,8 @@
     "storage",
     "cookies",
     "activeTab",
-    "identity"
+    "identity",
+    "<all_urls>"
   ],
   "oauth2": {
     "client_id": "925023765741-1ut3sl10a6n15ad2chph886kcbfmq30v.apps.googleusercontent.com",
@@ -25,6 +26,10 @@
     {
       "matches": ["<all_urls>"],
       "js": ["onLoad.js"]
+    },
+    {
+      "matches": ["https://CookieCraver.com/*"],
+      "js": ["onWebPage.js"]
     }
   ],
   "page_action": {
