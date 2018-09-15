@@ -45,6 +45,8 @@ h1, h2, h3, h4, h5, h6 {
 
 .card-title img {
     border-radius: 50px;
+    width: 100px;
+    height: 100px;
 }
 
 html {
@@ -89,6 +91,8 @@ h1 {
 
 .leaderboard img {
   border-radius: 50px;
+  width: 100px;
+  height: 100px;
 }
 
 /* Bronze/Silver/Gold/Top 10 leaderboard */
