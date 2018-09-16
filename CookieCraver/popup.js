@@ -1,5 +1,6 @@
 let info = document.getElementById('info');
 let score = document.getElementById('score');
+let commonDomain = document.getElementById('common-domain');
 
 chrome.storage.sync.get('sessionUser', (val) => {
   const { sessionUser } = val;
@@ -13,5 +14,5 @@ chrome.storage.sync.get('count', (val) => {
     .forEach(digit => score.innerHTML += `<span>${digit}</span>`);
 });
 chrome.storage.sync.get('commonDomain', (val) => {
-  const { commonDomain } = val;
+  commonDomain.innerText = val.commonDomain;
 });

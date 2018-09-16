@@ -68,7 +68,7 @@ let timeOutID;
 chrome.cookies.getAll({}, (cookies) => {
   chrome.storage.sync.set({ count: cookies.length });
 });
-chrome.cookies.onChanged.addListener((info) => {
+chrome.cookies.onChanged.addListener(() => {
   window.clearTimeout(timeOutID);
   timeOutID = window.setTimeout(() => chrome.cookies.getAll({}, (cookies) => {
     const keys = {};

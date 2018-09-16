@@ -55,3 +55,7 @@ p {
   padding: 0.5em;
   vertical-align: center;
 }
+
+#common-domain {
+  font-weight: bold;
+}
