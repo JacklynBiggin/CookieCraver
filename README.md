@@ -1,4 +1,4 @@
-# CookieClicker
+# Cookie Craver
 
 API Endpoints:
 * POST `/user`
@@ -12,7 +12,7 @@ API Endpoints:
             } 
         ```
 * PUT `/user/update`
-    * Add `new` to user's current score
+    * Sets `new` to be the user's score
     *   ``` 
             {
                 "uid": 1234,
@@ -20,6 +20,6 @@ API Endpoints:
             } 
         ``` 
 * GET `/user/cookies?uid=<uid>`
-    *   Returns user's score
+    *   Returns user information
 * GET `/leaderboard`
     * Returns DB rows for top 100 users
