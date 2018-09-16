@@ -16,5 +16,8 @@ chrome.storage.sync.get('sessionUser', (val) => {
       total.innerText = data.total;
       name.innerText = `${data.fname} ${data.sname}`;
       score.innerHTML = data.score.toString().split('').map(digit => `<span>${digit}</span>`).join('');
+    }).catch(() => {
+      document.getElementById('download').style.display = "block";
+      document.getElementById('card').style.display = "none";
     });
 });
