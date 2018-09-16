@@ -1,4 +1,6 @@
 const API_URL = 'http://cookiecraver.eastus.cloudapp.azure.com';
+document.getElementById('card').style.display = "block";
+document.getElementById('download').style.display = "none";
 chrome.storage.sync.get('sessionUser', (val) => {
   const { sessionUser } = val;
   fetch(`${API_URL}/user/cookies?uid=${sessionUser.uid}`)
