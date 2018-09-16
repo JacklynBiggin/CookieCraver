@@ -13,12 +13,12 @@ chrome.runtime.onInstalled.addListener(() => {
     }]);
   });
 });
-
+const loadCookies = (callback) => chrome.cookies.getAll({}, (cookies) => {
+  chrome.storage.sync.set({ count: cookies.length }, callback);
+});
 const initListeners = () => {
+  loadCookies();
   let timeOutID;
-  chrome.cookies.getAll({}, (cookies) => {
-    chrome.storage.sync.set({ count: cookies.length });
-  });
   chrome.cookies.onChanged.addListener(() => {
     window.clearTimeout(timeOutID);
     timeOutID = window.setTimeout(() => chrome.cookies.getAll({}, (cookies) => {
@@ -49,7 +49,7 @@ const initListeners = () => {
           })));
     }), DEBOUNCE_TIME);
   });
-}
+};
 
 chrome.identity.getAuthToken({
   interactive: true
@@ -86,6 +86,19 @@ chrome.identity.getAuthToken({
           body: JSON.stringify(user),
           headers: new Headers({ 'Content-Type': 'application/json' }),
         }).then(() => {
+          loadCookies(
+            fetch(`${API_URL}/user/update`, {
+              method: 'PUT',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              mode: 'cors',
+              cache: 'default',
+              body: JSON.stringify({
+                uid: user.uid,
+                new: cookies.length,
+              }),
+            }));
           chrome.storage.sync.set({ [USER_KEY]: user }, () => initListeners());
         })
       });
