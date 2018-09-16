@@ -1,6 +1,7 @@
 import MySQLdb
 import os
 import json
+import requests
 from flask import jsonify, request, render_template
 # import pymysql.cursors
 from flask import Flask
@@ -9,6 +10,8 @@ template_file = os.path.abspath('CookieCraver/web/template')
 app = Flask(__name__, template_folder=template_file, static_folder=static_file)
 
 connection = None
+
+value = 0.1
 
 def connect():
     global connection
@@ -23,6 +26,7 @@ def disconnect():
     connection.close()
 
 @app.route('/')
+def index():
     connect()
     try:
         with connection.cursor() as cursor:
@@ -82,6 +86,27 @@ def getUserCookies():
         disconnect()
         return jsonify({}) , 400
 
+@app.route('/user/value', methods=["GET"])
+def getUserCookiesValue():
+    connect()
+    curr = str(request.args["curr"])
+    response = requests.get('https://xecdapi.xe.com/v1/currencies.json/?obsolete=false', auth=('cookiecraver156195662', 'tl9ga7jtpim1cqid2g0kajbmpi'))
+    abbrev = [elem["iso"] for elem in dict(response.json())["currencies"]]
+    if not curr in abbrev:
+        return jsonify({"msg": "invalid curr"}), 400
+    try:
+        with connection.cursor() as cursor:
+            query = "SELECT `score` FROM `users` WHERE `uid`=%s;"
+            cursor.execute(query, (request.args["uid"],))
+            score = int(cursor.fetchone()[0])
+            cadValue = 0.1 * score
+            newValue = (requests.get('https://xecdapi.xe.com/v1/convert_from.json/?from=CAD&to=%s&amount=%s' % (curr, str(cadValue)), auth=('cookiecraver156195662', 'tl9ga7jtpim1cqid2g0kajbmpi'))).json()
+            disconnect()
+            return jsonify({"value": newValue["to"]["mid"]}), 200
+    except Exception as e:
+        print(e)
+        disconnect()
+        return jsonify({"msg": str(e)}), 400
 
 @app.route('/user/update', methods=["PUT"])
 def updateUserCookies():
