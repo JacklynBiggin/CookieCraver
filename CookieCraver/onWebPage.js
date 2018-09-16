@@ -3,6 +3,10 @@ document.getElementById('card').style.display = "block";
 document.getElementById('download').style.display = "none";
 chrome.storage.sync.get('sessionUser', (val) => {
   const { sessionUser } = val;
+  if (!sessionUser) {
+    document.getElementById('download').style.display = "block";
+    document.getElementById('card').style.display = "none";
+  }
   fetch(`${API_URL}/user/cookies?uid=${sessionUser.uid}`)
     .then(data => data.json())
     .then((data) => {
@@ -16,5 +20,8 @@ chrome.storage.sync.get('sessionUser', (val) => {
       total.innerText = data.total;
       name.innerText = `${data.fname} ${data.sname}`;
       score.innerHTML = data.score.toString().split('').map(digit => `<span>${digit}</span>`).join('');
+    }).catch(() => {
+      document.getElementById('download').style.display = "block";
+      document.getElementById('card').style.display = "none";
     });
 });
