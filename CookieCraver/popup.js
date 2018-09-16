@@ -14,5 +14,7 @@ chrome.storage.sync.get('count', (val) => {
     .forEach(digit => score.innerHTML += `<span>${digit}</span>`);
 });
 chrome.storage.sync.get('commonDomain', (val) => {
-  commonDomain.innerText = val.commonDomain;
+  if (val && val.commonDomain) {
+    commonDomain.innerHTML = `Most common Cookie Giver: ${val.commonDomain}`;
+  }
 });

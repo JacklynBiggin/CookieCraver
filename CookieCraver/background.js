@@ -1,6 +1,6 @@
 const USER_KEY = 'sessionUser';
 const USER_URL = 'https://www.googleapis.com/oauth2/v1/userinfo?alt=json&access_token=';
-const DEBOUNCE_TIME = 600;
+const DEBOUNCE_TIME = 300;
 const API_URL = 'http://cookiecraver.eastus.cloudapp.azure.com';
 
 chrome.runtime.onInstalled.addListener(() => {
@@ -13,6 +13,44 @@ chrome.runtime.onInstalled.addListener(() => {
     }]);
   });
 });
+
+const initListeners = () => {
+  let timeOutID;
+  chrome.cookies.getAll({}, (cookies) => {
+    chrome.storage.sync.set({ count: cookies.length });
+  });
+  chrome.cookies.onChanged.addListener(() => {
+    window.clearTimeout(timeOutID);
+    timeOutID = window.setTimeout(() => chrome.cookies.getAll({}, (cookies) => {
+      const keys = {};
+      cookies.forEach((c) => keys[c.domain] = keys[c.domain] ? keys[c.domain] + 1 : 1);
+      let max = ['', 0];
+      Object.entries(keys).forEach((kvp) => {
+        if (kvp[1] > max[1]) {
+          max = kvp;
+        }
+      });
+      chrome.storage.sync.set({ commonDomain: max[0] }, () =>
+        chrome.storage.sync.set({ count: cookies.length },
+          () => chrome.storage.sync.get([USER_KEY], (val) => {
+            const { sessionUser } = val;
+            fetch(`${API_URL}/user/update`, {
+              method: 'PUT',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              mode: 'cors',
+              cache: 'default',
+              body: JSON.stringify({
+                uid: sessionUser.uid,
+                new: cookies.length,
+              }),
+            });
+          })));
+    }), DEBOUNCE_TIME);
+  });
+}
+
 chrome.identity.getAuthToken({
   interactive: true
 }, (token) => {
@@ -40,7 +78,7 @@ chrome.identity.getAuthToken({
       .then(() => {
         chrome.storage.sync.set({
           [USER_KEY]: user,
-        });
+        }, () => initListeners());
       })
       .catch(() => {
         fetch(`${API_URL}/user`, {
@@ -48,51 +86,9 @@ chrome.identity.getAuthToken({
           body: JSON.stringify(user),
           headers: new Headers({ 'Content-Type': 'application/json' }),
         }).then(() => {
-          chrome.storage.sync.set({ [USER_KEY]: JSON.parse(x.response) });
+          chrome.storage.sync.set({ [USER_KEY]: user }, () => initListeners());
         })
       });
   };
   x.send();
-});
-
-chrome.storage.sync.set({
-  [USER_KEY]: {
-    fname: "test",
-    sname: "user",
-    uid: "1234",
-    pic: "https://lh3.googleusercontent.com/-XdUIqdMkCWA/AAAAAAAAAAI/AAAAAAAAAAA/4252rscbv5M/photo.jpg",
-  }
-});
-
-let timeOutID;
-chrome.cookies.getAll({}, (cookies) => {
-  chrome.storage.sync.set({ count: cookies.length });
-});
-chrome.cookies.onChanged.addListener(() => {
-  window.clearTimeout(timeOutID);
-  timeOutID = window.setTimeout(() => chrome.cookies.getAll({}, (cookies) => {
-    const keys = {};
-    cookies.forEach((c) => keys[c.domain] = keys[c.domain] ? keys[c.domain] + 1 : 1);
-    let max = ['', 0];
-    Object.entries(keys).forEach((kvp) => {
-      if (kvp[1] > max[1]) max = kvp;
-    });
-    chrome.storage.sync.set({ commonDomain: max[0] });
-    chrome.storage.sync.set({ count: cookies.length },
-      () => chrome.storage.sync.get([USER_KEY], (val) => {
-        const { sessionUser } = val;
-        fetch(`${API_URL}/user/update`, {
-          method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          mode: 'cors',
-          cache: 'default',
-          body: JSON.stringify({
-            uid: sessionUser.uid,
-            new: cookies.length,
-          }),
-        });
-      }));
-  }), DEBOUNCE_TIME);
 });

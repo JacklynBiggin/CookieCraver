@@ -94,8 +94,7 @@ def updateUserCookies():
             query2 = "UPDATE `users` SET `score`=%s WHERE `uid`=%s;"
             cursor.execute(query1, (request.json["uid"],))
             currScore = int(cursor.fetchone()[0])
-            if int(request.json["new"]) > currScore:
-                cursor.execute(query2, (int(request.json["new"]), request.json["uid"], ))
+            cursor.execute(query2, (int(request.json["new"]), request.json["uid"], ))
             disconnect()
             return jsonify({}), 200
     except Exception as e:
