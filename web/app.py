@@ -23,6 +23,7 @@ def disconnect():
     connection.close()
 
 @app.route('/')
+def index():
     connect()
     try:
         with connection.cursor() as cursor:
