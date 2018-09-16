@@ -25,7 +25,8 @@
   "content_scripts": [
     {
       "matches": [
-        "http://cookiecraver.eastus.cloudapp.azure.com/*"
+        "http://cookiecraver.eastus.cloudapp.azure.com/*",
+        "http://cookiecraver.com/*"
       ],
       "js": [
         "onWebPage.js"
