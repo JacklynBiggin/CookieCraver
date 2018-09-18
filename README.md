@@ -1,5 +1,5 @@
 # Cookie Craver
-![Cookie Craver screenshot](https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/682/804/datas/gallery.jpg)
+![Cookie Craver screenshot](https://i.imgur.com/BMgfgOW.jpg)
 
 ## What is Cookie Craver?
 Cookie Clicker is great, but having to actually click is soooo 2013. Cookie Craver aims to fix that - think of it as Cookie Clicker, but you earn points by collecting internet cookies, rather than having to click. It uses Chrome extension to track your cookies, and has a Python/Azure backend to store and display those all important scores.
