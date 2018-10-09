@@ -1,3 +1,5 @@
+> ⚠️ This is a Hackathon entry for Hack the North 2018, and was created in under 48 hours. The code in this repo is likely to be hacky and potentially unstable/insecure, so please be careful if forking this repo.
+
 # Cookie Craver
 ![Cookie Craver screenshot](https://i.imgur.com/BMgfgOW.jpg)
 
